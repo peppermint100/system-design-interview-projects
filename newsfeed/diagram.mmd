@@ -1,0 +1,22 @@
+flowchart TB
+    subgraph Client[클라이언트]
+        direction TB
+    end
+
+    subgraph Feed_Service[피드 발행 서비스]
+        direction TB
+    end
+
+    subgraph Event_Bus[이벤트 버스]
+        direction TB
+        Kafka[Kafka\nfeed-events 토픽]
+    end
+
+    subgraph Storage[저장소]
+        direction TB
+        MySQL[(MySQL\nnewsfeeds 테이블)]
+    end
+
+    Client -->|1. POST /api/v1/feeds| Feed_Service
+    Feed_Service -->|2. 피드 데이터 저장| Storage
+    Feed_Service -->|3. 이벤트 발행| Kafka
