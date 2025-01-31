@@ -1,0 +1,31 @@
+server:
+  port: 8085
+  id: 1
+  domain: http://localhost:8085/
+
+spring:
+  application:
+    name: newsfeed-publish-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/newsfeed?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: root
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 20
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      idle-timeout: 600000
+      keepalive-time: 60000
+      validation-timeout: 5000
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        highlight_sql: true
