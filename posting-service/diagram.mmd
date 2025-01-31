@@ -1,0 +1,28 @@
+flowchart TB
+    subgraph Client[클라이언트]
+        direction TB
+    end
+
+    subgraph Post_Service[포스트 저장 서비스]
+        direction TB
+    end
+
+    subgraph Post_Cache[포스트 캐시]
+        direction TB
+        Redis[(Redis)]
+    end
+
+    subgraph Event_Bus[이벤트 버스]
+        direction TB
+        Kafka[Kafka\nfeed-events 토픽]
+    end
+
+    subgraph Post_Storage[포스트 데이터베이스]
+        direction TB
+        MySQL[(MySQL\nposts 테이블)]
+    end
+
+    Client -->|1. POST /api/v1/posts| Post_Service
+    Post_Service -->|2. 포스트 데이터 저장| Post_Storage
+    Post_Service -->|3. 포스트 데이터 캐싱| Post_Cache
+    Post_Service -->|4. 포스트 생성 이벤트 발행| Kafka
