@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: newsfeed-publish-service
+    name: newsfeed-core-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/newsfeed?serverTimezone=UTC&characterEncoding=UTF-8
@@ -19,6 +19,11 @@ spring:
       idle-timeout: 600000
       keepalive-time: 60000
       validation-timeout: 5000
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
