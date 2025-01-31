@@ -1,6 +1,6 @@
 package com.example.newsfeed.config
 
-import com.example.newsfeed.vo.CreateNewsFeedEvent
+import com.example.newsfeed.vo.CreatePostEvent
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
@@ -15,19 +15,19 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 class KafkaConfig {
 
     companion object {
-        val topic = "create_newsfeed_event"
+        val topic = "create_post_event"
     }
 
     @Value("\${spring.kafka.bootstrap-servers}")
     private lateinit var bootstrapServers: String
 
-    @Bean("createNewsFeedEventKafkaTemplate")
-    fun kafkaTemplate(): KafkaTemplate<String, CreateNewsFeedEvent> {
+    @Bean("createPostEventKafkaTemplate")
+    fun kafkaTemplate(): KafkaTemplate<String, CreatePostEvent> {
         return KafkaTemplate(producerFactory())
     }
 
     @Bean
-    fun producerFactory(): ProducerFactory<String, CreateNewsFeedEvent> {
+    fun producerFactory(): ProducerFactory<String, CreatePostEvent> {
         val configProps = mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,

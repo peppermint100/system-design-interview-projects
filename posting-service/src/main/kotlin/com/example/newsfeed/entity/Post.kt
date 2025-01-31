@@ -5,8 +5,8 @@ import java.time.Instant
 import java.util.*
 
 @Entity
-@Table(name = "news_feeds")
-class NewsFeed(
+@Table(name = "posts")
+class Post(
     @Id
     @Column(updatable = false, columnDefinition = "BINARY(16)")
     val id: UUID = UUID.randomUUID(),
@@ -21,8 +21,8 @@ class NewsFeed(
     val createdAt: Instant = Instant.now()
 ) {
     companion object {
-        fun create(userId: UUID, content: String): NewsFeed {
-            return NewsFeed(
+        fun create(userId: UUID, content: String): Post {
+            return Post(
                 userId = userId,
                 content = content
             )
