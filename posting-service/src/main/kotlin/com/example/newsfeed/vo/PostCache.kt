@@ -6,12 +6,12 @@ import java.util.UUID
 
 data class PostCache(
     val id: UUID,
-    val userId: UUID,
+    val content: String,
     val createdAt: Instant
 ) {
     companion object {
         fun of(entity: Post): PostCache {
-            return PostCache(entity.id, entity.userId, entity.createdAt)
+            return PostCache(entity.id, entity.content, entity.createdAt)
         }
     }
 }
