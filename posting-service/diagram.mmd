@@ -35,10 +35,18 @@ flowchart TB
         direction TB
     end
 
-    Client -->|1. POST /api/v1/posts| Post_Service
-    Post_Service -->|2. 포스트 데이터 저장| Post_Storage
-    Post_Service -->|3. 포스트 데이터 캐싱| Post_Cache
-    Post_Service -->|4. 포스트 생성 이벤트 발행| Kafka
+    subgraph Newsfeed_Service[뉴스피드 서비스]
+        direction TB
+    end
+
+    Client -->|a-1. POST /api/v1/posts| Post_Service
+    Post_Service -->|a-2. 포스트 데이터 저장| Post_Storage
+    Post_Service -->|a-3. 포스트 데이터 캐싱| Post_Cache
+    Post_Service -->|a-4. 포스트 생성 이벤트 발행| Kafka
     Kafka -->Fanout_Service
-    Fanout_Service <-->|5. 사용자 정보 불러오기|User_Service
-    Fanout_Service-->|6. 새로운 포스트를 뉴스피드에 추가|Newsfeed_Cache
+    Fanout_Service <-->|a-5. 사용자 정보 불러오기|User_Service
+    Fanout_Service-->|a-6. 새로운 포스트를 뉴스피드에 추가|Newsfeed_Cache
+    Client -->|b-1. GET /api/v1/newsfeeds| Newsfeed_Service
+    Newsfeed_Service <-->|b-2. 뉴스피드에 사용될 Post Id 로드|Newsfeed_Cache
+    Newsfeed_Service <-->|b-3. Post Cache를 통해 완전한 뉴스피드 생성|Post_Cache
+    Newsfeed_Service -->|b-4. 완성된 뉴스피드를 JSON 형태로 반환|Client
