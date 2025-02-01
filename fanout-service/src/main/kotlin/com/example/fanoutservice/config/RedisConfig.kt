@@ -1,4 +1,4 @@
-package com.example.newsfeed.config
+package com.example.fanoutservice.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,8 +15,6 @@ class RedisConfig {
         template.connectionFactory = connectionFactory
         template.keySerializer = StringRedisSerializer()
         template.valueSerializer = StringRedisSerializer()
-        template.hashKeySerializer = StringRedisSerializer()
-        template.hashValueSerializer = StringRedisSerializer()
         return template
     }
 }

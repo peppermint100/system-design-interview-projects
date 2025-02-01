@@ -32,7 +32,7 @@ class PostingService(
         val postCache = PostCache.of(savedPost)
         redisTemplate.opsForHash<String, String>().putAll(redisKey, mapOf(
             "id" to postCache.id.toString(),
-            "userId" to postCache.userId.toString(),
+            "content" to postCache.content,
             "createdAt" to postCache.createdAt.epochSecond.toString()
         ))
 
