@@ -1,0 +1,18 @@
+
+spring:
+  application:
+    name: newsfeed-service
+  data:
+    redis:
+      post:
+        host: localhost
+        port: 6379
+        password: redispassword
+        database: 0
+      newsfeed:
+        host: localhost
+        port: 6380
+        password: redispassword
+        database: 0
+server:
+  port: 8082
