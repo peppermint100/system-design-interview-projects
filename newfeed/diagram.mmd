@@ -1,0 +1,52 @@
+flowchart TB
+    subgraph Client[클라이언트]
+        direction TB
+    end
+
+    subgraph Post_Service[포스트 저장 서비스]
+        direction TB
+    end
+
+    subgraph Post_Cache[포스트 캐시]
+        direction TB
+        Post_Redis[(Redis)]
+    end
+
+    subgraph Event_Bus[이벤트 버스]
+        direction TB
+        Kafka[Kafka\nfeed-events 토픽]
+    end
+
+    subgraph Post_Storage[포스트 데이터베이스]
+        direction TB
+        Post_MySQL[(MySQL)]
+    end
+
+    subgraph Fanout_Service[팬아웃 서비스]
+        direction TB
+    end
+
+    subgraph Newsfeed_Cache[뉴스피드 캐시]
+        direction TB
+        Newsfeed_Redis[(Redis)]
+    end
+
+    subgraph User_Service[사용자 서비스]
+        direction TB
+    end
+
+    subgraph Newsfeed_Service[뉴스피드 서비스]
+        direction TB
+    end
+
+    Client -->|a-1. POST /api/v1/posts| Post_Service
+    Post_Service -->|a-2. 포스트 데이터 저장| Post_Storage
+    Post_Service -->|a-3. 포스트 데이터 캐싱| Post_Cache
+    Post_Service -->|a-4. 포스트 생성 이벤트 발행| Kafka
+    Kafka -->Fanout_Service
+    Fanout_Service <-->|a-5. 사용자 정보 불러오기|User_Service
+    Fanout_Service-->|a-6. 새로운 포스트를 뉴스피드에 추가|Newsfeed_Cache
+    Client -->|b-1. GET /api/v1/newsfeeds| Newsfeed_Service
+    Newsfeed_Service <-->|b-2. 뉴스피드에 사용될 Post Id 로드|Newsfeed_Cache
+    Newsfeed_Service <-->|b-3. Post Cache를 통해 완전한 뉴스피드 생성|Post_Cache
+    Newsfeed_Service -->|b-4. 완성된 뉴스피드를 JSON 형태로 반환|Client
