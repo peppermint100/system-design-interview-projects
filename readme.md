@@ -7,7 +7,7 @@
 구현하며 든 생각과 구현 과정은 블로그에 정리하고 있습니다.
 
 - [8장 - URL 단축기](https://medium.com/peppermint100/url-%EB%8B%A8%EC%B6%95%EA%B8%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0-with-kotlin-spring-boot-2ef0552d4c37)
-- 11장 뉴스피드 시스템 진행중...
+- [11장 - 뉴스피드 시스템](https://medium.com/peppermint100/%EB%89%B4%EC%8A%A4-%ED%94%BC%EB%93%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%84%A4%EA%B3%84-3abf1ad38f4f)
 
 ## 사용한 기술
 - Kotlin, Spring Boot, MySQL, JPA, Docker, Redis, Kafka ...
