@@ -1,1 +1,12 @@
-subgraph
+flowchart TB
+    subgraph Client [클라이언트]
+    end
+
+    subgraph BlockStorageServer [블록 저장소 서버]
+    end
+
+    subgraph AmazonS3[클라우드 스토리지]
+    end
+
+    Client-->|1.파일을 전달|BlockStorageServer
+    BlockStorageServer-->|2.파일을 블록 단위로 쪼개서 클라우드에 업로드|AmazonS3
