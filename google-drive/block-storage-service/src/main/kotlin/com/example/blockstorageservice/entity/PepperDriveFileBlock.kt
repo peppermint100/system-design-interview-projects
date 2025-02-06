@@ -10,10 +10,10 @@ class PepperDriveFileBlock(
     val id: Long = 0L,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "file_id")
+    @JoinColumn(name = "file_id", columnDefinition = "BINARY(16)")
     val file: PepperDriveFile,
 
-    @Column(name = "order")
+    @Column(name = "block_order")
     val order: Int,
 
     @Column(name = "created_at")

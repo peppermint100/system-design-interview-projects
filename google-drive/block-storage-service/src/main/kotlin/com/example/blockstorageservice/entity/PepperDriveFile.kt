@@ -11,12 +11,12 @@ import java.util.UUID
 @Entity
 @Table(name = "file")
 class PepperDriveFile(
-    @Id val id: UUID,
+    @Id @Column(columnDefinition = "BINARY(16)", updatable = false) val id: UUID,
     @Column(name = "file_name")  var filename: String,
     @Column(name = "extension") var extension: FileExtension,
     @Column(name = "file_size_byte") val fileSizeByte: Long,
     @Column(name = "created_at") val createdAt: Instant,
-    @Column(name = "updated_at") var updatedAt: Instant
+    @Column(name = "updated_at") var updatedAt: Instant,
 ) {
 
     companion object {
