@@ -8,7 +8,7 @@ spring:
     name: url-shortner
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/block_storage?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/block-storage?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: root
     hikari:
@@ -23,9 +23,15 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
         format_sql: true
         highlight_sql: true
+    defer-datasource-initialization: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
