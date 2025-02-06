@@ -1,11 +1,11 @@
 package com.example.blockstorageservice.dto
 
-import com.example.blockstorageservice.entity.PepperDriveFileBlock
-import java.io.File
+import java.util.UUID
 
 data class ChunkedFileBlockDto(
-    val fileBlockEntity: PepperDriveFileBlock,
-    val fileBlock: ByteArray
+    val fileBlock: ByteArray,
+    val id: UUID,
+    val order: Int
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -13,13 +13,15 @@ data class ChunkedFileBlockDto(
 
         other as ChunkedFileBlockDto
 
-        if (fileBlockEntity != other.fileBlockEntity) return false
-        return fileBlock.contentEquals(other.fileBlock)
+        if (!fileBlock.contentEquals(other.fileBlock)) return false
+        if (id != other.id) return false
+        return order == other.order
     }
 
     override fun hashCode(): Int {
-        var result = fileBlockEntity.hashCode()
-        result = 31 * result + fileBlock.contentHashCode()
+        var result = fileBlock.contentHashCode()
+        result = 31 * result + id.hashCode()
+        result = 31 * result + order
         return result
     }
 }

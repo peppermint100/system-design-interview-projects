@@ -1,5 +1,6 @@
 package com.example.blockstorageservice.entity
 
+import com.example.blockstorageservice.dto.UploadedFileBlockDto
 import jakarta.persistence.*
 import java.time.Instant
 import java.util.UUID
@@ -17,13 +18,22 @@ class PepperDriveFileBlock(
     @Column(name = "block_order")
     val order: Int,
 
+    @Column(name = "object_url")
+    val objectUrl: String,
+
     @Column(name = "created_at")
     val createdAt: Instant
 ) {
 
     companion object {
-        fun create(fileEntity: PepperDriveFile, order: Int): PepperDriveFileBlock {
-            return PepperDriveFileBlock(id = UUID.randomUUID(), file = fileEntity, order = order, createdAt = Instant.now())
+        fun create(fileEntity: PepperDriveFile, fileBlockDto: UploadedFileBlockDto): PepperDriveFileBlock {
+            return PepperDriveFileBlock(
+                id = fileBlockDto.fileBlockId,
+                file = fileEntity,
+                order = fileBlockDto.order,
+                objectUrl = fileBlockDto.objectUrl,
+                createdAt = Instant.now()
+            )
         }
     }
 }

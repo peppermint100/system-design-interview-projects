@@ -1,7 +1,6 @@
 package com.example.blockstorageservice.service
 
 import com.example.blockstorageservice.dto.ChunkedFileBlockDto
-import com.example.blockstorageservice.entity.PepperDriveFile
 import com.example.blockstorageservice.entity.PepperDriveFileBlock
 import com.example.blockstorageservice.repository.PepperDriveFileBlockRepository
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.util.*
 
 @Service
 class FileBlockService(
@@ -25,7 +25,11 @@ class FileBlockService(
         fileBlockRepository.saveAll(fileBlocks)
     }
 
-    suspend fun sliceFileIntoFileBlock(file: MultipartFile, fileEntity: PepperDriveFile): MutableList<ChunkedFileBlockDto> {
+    /*
+    파일을 순서대로 잘라서 ByteArray로 변환
+    IO 스레드 사용
+     */
+    suspend fun sliceFileIntoFileBlock(file: MultipartFile): List<ChunkedFileBlockDto> {
         val storageDir = File(STORAGE_PATH)
         if (!storageDir.exists()) {
             storageDir.mkdirs()
@@ -45,9 +49,7 @@ class FileBlockService(
                     // 마지막 청크는 정확히 2mb가 아닐 수 있다.
                     val chunkData = if (bytesRead == CHUNK_SIZE) buffer else buffer.copyOf(bytesRead)
 
-                    val fileBlockEntity = PepperDriveFileBlock.create(fileEntity, chunkNumber)
-
-                    val chunkedFileBlockDto = ChunkedFileBlockDto(fileBlockEntity, chunkData)
+                    val chunkedFileBlockDto = ChunkedFileBlockDto(chunkData, UUID.randomUUID(), chunkNumber)
                     chunks.add(chunkedFileBlockDto)
 
                     chunkNumber += 1

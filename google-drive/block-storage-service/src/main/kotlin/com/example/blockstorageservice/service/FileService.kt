@@ -1,5 +1,6 @@
 package com.example.blockstorageservice.service
 
+import com.example.blockstorageservice.amazon.s3.S3Service
 import com.example.blockstorageservice.entity.PepperDriveFile
 import com.example.blockstorageservice.entity.PepperDriveFileBlock
 import com.example.blockstorageservice.entity.PepperDriveFileVersion
@@ -13,14 +14,18 @@ class FileService(
     private val fileBlockService: FileBlockService,
     private val fileVersionService: FileVersionService,
     private val fileRepository: PepperDriveFileRepository,
+    private val s3Service: S3Service
 ) {
 
     @Transactional
     suspend fun uploadFile(file: MultipartFile, userId: Long) {
         val fileEntity = PepperDriveFile.create(file)
-        val fileBlocks = fileBlockService.sliceFileIntoFileBlock(file, fileEntity)
+        val fileBlocks = fileBlockService.sliceFileIntoFileBlock(file)
         val fileVersion = PepperDriveFileVersion.create(fileEntity)
-        val fileBlockEntities = fileBlocks.map { dto -> dto.fileBlockEntity }
+
+        val uploadedFileBlockDto = s3Service.upload(fileBlocks)
+        val fileBlockEntities = uploadedFileBlockDto.map { fileBlock -> PepperDriveFileBlock.create(fileEntity, fileBlock) }
+
         saveFile(fileEntity, fileBlockEntities, fileVersion)
     }
 
