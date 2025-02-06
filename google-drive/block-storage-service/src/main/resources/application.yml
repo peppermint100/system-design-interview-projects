@@ -8,7 +8,7 @@ spring:
     name: url-shortner
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/block-storage?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/block-storage?serverTimezone=UTC&characterEncoding=UTF-8&rewriteBatchedStatements=true
     username: root
     password: root
     hikari:
@@ -29,6 +29,10 @@ spring:
         show_sql: true
         format_sql: true
         highlight_sql: true
+        jdbc:
+          batch_size: 50
+        order_updates: true
+        order_inserts: true
     defer-datasource-initialization: true
   servlet:
     multipart:

@@ -3,18 +3,26 @@ package com.example.blockstorageservice.service
 import com.example.blockstorageservice.dto.ChunkedFileBlockDto
 import com.example.blockstorageservice.entity.PepperDriveFile
 import com.example.blockstorageservice.entity.PepperDriveFileBlock
+import com.example.blockstorageservice.repository.PepperDriveFileBlockRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 
 @Service
-class FileBlockService {
-
+class FileBlockService(
+    private val fileBlockRepository: PepperDriveFileBlockRepository,
+) {
     companion object {
         const val CHUNK_SIZE = 2 * 1024 * 1024 // 1 kb * 1kb * 2 = 2mb
         const val STORAGE_PATH = "chunked_files"
+    }
+
+    @Transactional
+    fun saveFileBlocks(fileBlocks: List<PepperDriveFileBlock>) {
+        fileBlockRepository.saveAll(fileBlocks)
     }
 
     suspend fun sliceFileIntoFileBlock(file: MultipartFile, fileEntity: PepperDriveFile): MutableList<ChunkedFileBlockDto> {

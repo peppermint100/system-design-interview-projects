@@ -2,12 +2,13 @@ package com.example.blockstorageservice.entity
 
 import jakarta.persistence.*
 import java.time.Instant
+import java.util.UUID
 
 @Entity
 @Table(name = "file_block")
 class PepperDriveFileBlock(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
+    @Id @Column(columnDefinition = "BINARY(16)", updatable = false)
+    val id: UUID,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id", columnDefinition = "BINARY(16)")
@@ -22,7 +23,7 @@ class PepperDriveFileBlock(
 
     companion object {
         fun create(fileEntity: PepperDriveFile, order: Int): PepperDriveFileBlock {
-            return PepperDriveFileBlock(file = fileEntity, order = order, createdAt = Instant.now())
+            return PepperDriveFileBlock(id = UUID.randomUUID(), file = fileEntity, order = order, createdAt = Instant.now())
         }
     }
 }
