@@ -29,6 +29,10 @@ dependencies {
 	testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	// cloud
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-aws-context', version: '2.2.6.RELEASE'
+	testImplementation group: 'software.amazon.awssdk', name: 's3', version: '2.30.13'
+
 	// coroutines
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
